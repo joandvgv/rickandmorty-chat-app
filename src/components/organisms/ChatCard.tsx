@@ -28,9 +28,18 @@ export default async function ChatCard(props: Props) {
       </CardHeader>
       <Divider />
       <CardBody className="space-y-2">
-        {props.messages.map(({ message, id, character }: any) => {
-          const { image } = getCharacterById(character);
-          return <ChatBubble key={id} message={message} image={image} />;
+        {props.messages.map(({ message, id, character, time }: any) => {
+          const { image, name } = getCharacterById(character);
+          console.log("time", time);
+          return (
+            <ChatBubble
+              key={id}
+              message={message}
+              image={image}
+              time={time}
+              name={name}
+            />
+          );
         })}
       </CardBody>
       <Divider />
