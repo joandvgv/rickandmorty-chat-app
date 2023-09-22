@@ -3,6 +3,7 @@ import React from "react";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import { Divider } from "@nextui-org/divider";
 import ChatInput from "@/components/atoms/ChatInput";
+import ChatInputContainer from "./ChatInputContainer";
 
 type Props = {
   children?: React.ReactNode;
@@ -26,7 +27,9 @@ export default function ChatCard(props: Props) {
       </CardBody>
       <Divider />
       <CardFooter>
-        <ChatInput />
+        <ChatInputContainer>
+          <ChatInput />
+        </ChatInputContainer>
       </CardFooter>
     </Card>
   );

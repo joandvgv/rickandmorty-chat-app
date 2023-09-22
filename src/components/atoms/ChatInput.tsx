@@ -1,9 +1,24 @@
-import { Input } from "@nextui-org/input";
+"use client";
 
-export default function App() {
+import { Input } from "@nextui-org/input";
+import { useFormContext } from "react-hook-form";
+import { FormFieldWrapper } from "@/components/atoms/FormFieldWrapper";
+
+const FIELD_NAME = "message";
+
+export default function ChatInput() {
+  const formContext = useFormContext();
+
+  const registration = formContext?.register(FIELD_NAME, {});
+
   return (
-    <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
-      <Input type="text" placeholder="Type a message" />
-    </div>
+    <FormFieldWrapper name={FIELD_NAME}>
+      <Input
+        id={FIELD_NAME}
+        type="text"
+        placeholder="Type a message"
+        {...registration}
+      />
+    </FormFieldWrapper>
   );
 }
