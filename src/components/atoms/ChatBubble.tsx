@@ -13,7 +13,7 @@ export default function ChatBubble(props: Props) {
     >
       <div className="chat-image avatar">
         <div className="w-10 rounded-full">
-          <img src="https://rickandmortyapi.com/api/character/avatar/1.jpeg" />
+          <img src={props.image} />
         </div>
       </div>
       <div className="chat-bubble">{props.message}</div>

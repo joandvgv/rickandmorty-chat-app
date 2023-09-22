@@ -4,32 +4,18 @@ import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import { Divider } from "@nextui-org/divider";
 import ChatInput from "@/components/atoms/ChatInput";
 import ChatInputContainer from "./ChatInputContainer";
-import { getClient } from "@/lib/client";
-import { GET_MESSAGES_QUERY } from "@/graphql/chat-queries";
-import ChatBubble from "../atoms/ChatBubble";
+import ChatBubble from "@/components/atoms/ChatBubble";
+
+import { MessageData } from "@/graphql/types/chat";
+import { getCharacterById } from "@/graphql/utils";
 
 type Props = {
   children?: React.ReactNode;
   className?: string;
-};
-
-type QueryData = {
-  getMessages: {
-    message: string;
-    character: string;
-    time: string;
-  }[];
+  messages: MessageData[];
 };
 
 export default async function ChatCard(props: Props) {
-  const client = getClient();
-  const { data } = await client.query<QueryData>({
-    query: GET_MESSAGES_QUERY,
-    variables: {
-      threadId: "chat",
-    },
-  });
-
   return (
     <Card className={props.className}>
       <CardHeader className="flex gap-3">
@@ -41,9 +27,10 @@ export default async function ChatCard(props: Props) {
         </div>
       </CardHeader>
       <Divider />
-      <CardBody>
-        {data.getMessages.map(({ message }: any) => {
-          return <ChatBubble key={message} message={message} />;
+      <CardBody className="space-y-2">
+        {props.messages.map(({ message, id, character }: any) => {
+          const { image } = getCharacterById(character);
+          return <ChatBubble key={id} message={message} image={image} />;
         })}
       </CardBody>
       <Divider />
