@@ -1,4 +1,4 @@
-import ChatCard from "@/components/organisms/ChatCard";
+import ChatCard from "@/app/components/organisms/ChatCard";
 import { GET_CHARACTERS_QUERY } from "@/graphql/characters-queries";
 import { GET_MESSAGES_QUERY } from "@/graphql/chat-queries";
 import { MessageData } from "@/graphql/types/chat";

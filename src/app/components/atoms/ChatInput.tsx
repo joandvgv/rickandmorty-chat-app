@@ -2,7 +2,7 @@
 
 import { Input } from "@nextui-org/input";
 import { useFormContext } from "react-hook-form";
-import { FormFieldWrapper } from "@/components/atoms/FormFieldWrapper";
+import { FormFieldWrapper } from "@/app/components/atoms/FormFieldWrapper";
 
 const FIELD_NAME = "message";
 

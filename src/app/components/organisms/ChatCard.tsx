@@ -2,9 +2,9 @@ import React from "react";
 
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import { Divider } from "@nextui-org/divider";
-import ChatInput from "@/components/atoms/ChatInput";
+import ChatInput from "@/app/components/atoms/ChatInput";
 import ChatInputContainer from "./ChatInputContainer";
-import ChatBubble from "@/components/atoms/ChatBubble";
+import ChatBubble from "@/app/components/atoms/ChatBubble";
 
 import { MessageData } from "@/graphql/types/chat";
 import { getCharacterById } from "@/graphql/utils";
