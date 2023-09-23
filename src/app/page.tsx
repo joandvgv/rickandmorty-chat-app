@@ -1,29 +1,30 @@
+"use client";
+
 import ChatCard from "@/app/components/organisms/ChatCard";
 import { GET_CHARACTERS_QUERY } from "@/graphql/characters-queries";
 import { GET_MESSAGES_QUERY } from "@/graphql/chat-queries";
+import { makeClient } from "@/graphql/client";
 import { MessageData } from "@/graphql/types/chat";
-import { ChatClient, RickMortyClient } from "@/lib/client";
+import { useBackgroundQuery, useSuspenseQuery } from "@apollo/client";
 import Image from "next/image";
 import RickMortyLogo from "public/images/rick-morty-logo.svg";
+import PusherContainer from "./components/organisms/PusherContainer";
 
-export default async function App() {
-  const chatclient = ChatClient();
-  const rickMortyClient = RickMortyClient();
-
-  const { data: messageData } = await chatclient.query<{
+export default function App() {
+  const { data: messageData } = useSuspenseQuery<{
     getMessages: MessageData[];
-  }>({
-    query: GET_MESSAGES_QUERY,
-    variables: {
-      threadId: "chat",
-    },
+  }>(GET_MESSAGES_QUERY, {
+    variables: { threadId: "chat" },
   });
+
   const messages = messageData?.getMessages ?? [];
   const charactersInvolved = messages.map((message) => message.character);
 
-  await rickMortyClient.query<Character[]>({
-    query: GET_CHARACTERS_QUERY,
+  useSuspenseQuery(GET_CHARACTERS_QUERY, {
     variables: { ids: charactersInvolved },
+    context: {
+      clientName: "rickMorty",
+    },
   });
 
   return (
@@ -42,6 +43,7 @@ export default async function App() {
           className="h-full w-full"
           messages={messageData.getMessages ?? []}
         />
+        <PusherContainer />
       </div>
     </main>
   );

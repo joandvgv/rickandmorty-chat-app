@@ -8,6 +8,8 @@ import ChatBubble from "@/app/components/atoms/ChatBubble";
 
 import { MessageData } from "@/graphql/types/chat";
 import { getCharacterById } from "@/graphql/utils";
+import PusherContainer from "./PusherContainer";
+import { useApolloClient } from "@apollo/client";
 
 type Props = {
   children?: React.ReactNode;
@@ -15,7 +17,8 @@ type Props = {
   messages: MessageData[];
 };
 
-export default async function ChatCard(props: Props) {
+export default function ChatCard(props: Props) {
+  const client = useApolloClient();
   return (
     <Card className={props.className}>
       <CardHeader className="flex gap-3">
@@ -29,8 +32,7 @@ export default async function ChatCard(props: Props) {
       <Divider />
       <CardBody className="space-y-2">
         {props.messages.map(({ message, id, character, time }: any) => {
-          const { image, name } = getCharacterById(character);
-          console.log("time", time);
+          const { image, name } = getCharacterById(client, character);
           return (
             <ChatBubble
               key={id}
