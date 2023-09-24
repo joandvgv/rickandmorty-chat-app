@@ -28,7 +28,7 @@ export default function App() {
           }
         >
           <PusherContainer>
-            <ChatCard className="h-full w-full" />{" "}
+            <ChatCard className="h-full w-full" />
           </PusherContainer>
         </Suspense>
       </div>
