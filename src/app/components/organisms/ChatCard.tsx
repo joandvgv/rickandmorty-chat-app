@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import { Divider } from "@nextui-org/divider";
@@ -15,8 +15,8 @@ import { ChatContext } from "./PusherContainer";
 import { GET_CHARACTERS_QUERY } from "@/graphql/characters-queries";
 import { GET_MESSAGES_QUERY } from "@/graphql/chat-queries";
 import { Skeleton } from "@nextui-org/skeleton";
-import { Button } from "@nextui-org/react";
 import ClearMessagesButton from "../atoms/ClearMessagesButton";
+import useScrollBottom from "@/app/hooks/useScrollBottom";
 
 type Props = {
   children?: React.ReactNode;
@@ -42,6 +42,8 @@ export default function ChatCard(props: Props) {
       clientName: "rickMorty",
     },
   });
+  const memoizedMessages = useMemo(() => [messages.length], [messages.length]);
+  const chatContainerRef = useScrollBottom(memoizedMessages);
 
   return (
     <Card className={props.className}>
@@ -57,7 +59,11 @@ export default function ChatCard(props: Props) {
         </div>
       </CardHeader>
       <Divider />
-      <Skeleton isLoaded={!loading} className="h-full overflow-auto">
+      <Skeleton
+        ref={chatContainerRef}
+        isLoaded={!loading}
+        className="h-full overflow-auto"
+      >
         <CardBody className="space-y-2">
           {messages.map(({ message, id, character, time }: MessageData) => {
             const { image, name } = getCharacterById(client, character);
