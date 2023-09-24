@@ -33,7 +33,7 @@ export default function ChatInputContainer(props: Props) {
       optimisticResponse: {
         putMessage: {
           __typename: "Message",
-          id,
+          id, // explore using event ids directly.
           character: props.character,
           message: fieldsData.message,
           time: Date.now().toString(),

@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useRef, useState } from "react";
 
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import { Divider } from "@nextui-org/divider";
@@ -14,11 +16,18 @@ type Props = {
   children?: React.ReactNode;
   className?: string;
   messages: MessageData[];
-  character: string;
 };
 
 export default function ChatCard(props: Props) {
   const client = useApolloClient();
+  // TODO: fix this hack!
+  const [currentCharacter, setCurrentCharacter] = useState("");
+  useEffect(() => {
+    setCurrentCharacter(localStorage.getItem("currentCharacter") ?? "");
+  }, []);
+
+  if (currentCharacter === "") return <></>;
+
   return (
     <Card className={props.className}>
       <CardHeader className="flex gap-3">
@@ -40,14 +49,14 @@ export default function ChatCard(props: Props) {
               image={image}
               time={time}
               name={name}
-              type={character === props.character ? "end" : "start"}
+              type={character === currentCharacter ? "end" : "start"}
             />
           );
         })}
       </CardBody>
       <Divider />
       <CardFooter>
-        <ChatInputContainer character={props.character}>
+        <ChatInputContainer character={currentCharacter}>
           <ChatInput />
         </ChatInputContainer>
       </CardFooter>

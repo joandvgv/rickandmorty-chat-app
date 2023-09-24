@@ -44,12 +44,12 @@ export default function App() {
     Math.floor(Math.random() * totalCharacters) + 1
   ).toString();
 
-  const currentCharacterRef = useRef(localStorage.getItem("currentCharacter"));
-
   useEffect(() => {
-    if (currentCharacterRef.current == null) {
+    //TODO: fix this hack & implement properly
+    const loadedCurrent = localStorage.getItem("currentCharacter");
+
+    if (loadedCurrent == null) {
       localStorage.setItem("currentCharacter", currentCharacter);
-      currentCharacterRef.current = currentCharacter;
     }
   }, []);
 
@@ -68,9 +68,8 @@ export default function App() {
         <ChatCard
           className="h-full w-full"
           messages={messageData.getMessages ?? []}
-          character={currentCharacterRef.current!}
         />
-        <PusherContainer currentCharacter={currentCharacterRef.current!} />
+        <PusherContainer />
       </div>
     </main>
   );

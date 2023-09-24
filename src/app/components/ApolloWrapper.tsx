@@ -1,3 +1,5 @@
+"use client";
+
 import { makeClient } from "@/graphql/client";
 import { ApolloNextAppProvider } from "@apollo/experimental-nextjs-app-support/ssr";
 

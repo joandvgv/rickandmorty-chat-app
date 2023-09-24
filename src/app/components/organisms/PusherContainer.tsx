@@ -6,13 +6,10 @@ import Pusher from "pusher-js";
 import { useEffect } from "react";
 const PUSHER_MESSAGE_EVENT = "message";
 
-type Props = {
-  currentCharacter: string;
-};
-
-export default function PusherContainer(props: Props) {
+export default function PusherContainer() {
   const client = useApolloClient();
   useEffect(() => {
+    const currentCharacter = localStorage.getItem("currentCharacter");
     const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_CLIENT_ID!, {
       cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
     });
@@ -20,7 +17,7 @@ export default function PusherContainer(props: Props) {
     const channel = pusher.subscribe(process.env.NEXT_PUBLIC_PUSHER_CHANNEL!);
 
     channel.bind(PUSHER_MESSAGE_EVENT, (data: MessageData) => {
-      if (data.character === props.currentCharacter) return;
+      if (data.character === currentCharacter) return;
 
       const queryData = client.readQuery<{ getMessages: MessageData[] }>({
         query: GET_MESSAGES_QUERY,
