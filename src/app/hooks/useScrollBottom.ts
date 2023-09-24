@@ -7,7 +7,6 @@ export default function useScrollBottom<
   const containerRef = useRef<K>(null);
 
   useEffect(() => {
-    console.log("triggered");
     if (containerRef.current) {
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
     }
