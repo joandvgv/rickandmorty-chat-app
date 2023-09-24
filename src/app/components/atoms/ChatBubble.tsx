@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import format from "date-fns/format";
+import Image from "next/image";
 
 type Props = {
   message: string;
@@ -15,8 +16,14 @@ export default function ChatBubble(props: Props) {
       className={clsx("chat", props.type === "end" ? "chat-end" : "chat-start")}
     >
       <div className="chat-image avatar">
-        <div className="w-10 rounded-full">
-          <img src={props.image} />
+        <div className="w-10 rounded-full relative">
+          <Image
+            src={props.image ?? "/images/avatar.svg"}
+            fill
+            alt="Character's Avatar"
+            sizes="40px"
+            className="object-contain"
+          />
         </div>
       </div>
       <div className="chat-header space-x-1">
