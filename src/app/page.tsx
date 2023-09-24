@@ -9,7 +9,7 @@ import { Skeleton } from "@nextui-org/skeleton";
 
 export default function App() {
   return (
-    <main className="flex min-h-screen flex-col items-center md:p-24 md:space-y-24 p-12 space-y-12">
+    <main className="flex min-h-screen flex-col items-center md:p-24 md:space-y-24 p-8 space-y-6">
       <div className="max-w-[40vw] md:max-w-xs">
         <Image
           src={RickMortyLogo}
@@ -19,7 +19,7 @@ export default function App() {
           priority
         />
       </div>
-      <div className="flex flex-col h-[60vh] w-full md:w-3/6">
+      <div className="flex flex-col h-[80vh] md:h-[60vh] w-full md:w-3/6">
         <Suspense
           fallback={
             <Skeleton className="rounded-lg">
