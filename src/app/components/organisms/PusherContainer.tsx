@@ -6,6 +6,7 @@ import { useApolloClient } from "@apollo/client";
 import Pusher from "pusher-js";
 import { useEffect, createContext, useMemo } from "react";
 const PUSHER_MESSAGE_EVENT = "message";
+const PUSHER_DELETE_EVENT = "bulkDelete";
 
 type Props = {
   children?: React.ReactNode;
@@ -45,6 +46,18 @@ export default function PusherContainer(props: Props) {
         query: GET_MESSAGES_QUERY,
         data: {
           getMessages: [...currentData, { ...data, __typename: "Message" }],
+        },
+        variables: {
+          threadId: process.env.NEXT_PUBLIC_THREAD_ID,
+        },
+      });
+    });
+
+    channel.bind(PUSHER_DELETE_EVENT, () => {
+      client.writeQuery({
+        query: GET_MESSAGES_QUERY,
+        data: {
+          getMessages: [],
         },
         variables: {
           threadId: process.env.NEXT_PUBLIC_THREAD_ID,
