@@ -4,6 +4,8 @@ import ChatCard from "@/app/components/organisms/ChatCard";
 import Image from "next/image";
 import RickMortyLogo from "public/images/rick-morty-logo.svg";
 import PusherContainer from "./components/organisms/PusherContainer";
+import { Suspense } from "react";
+import { Skeleton } from "@nextui-org/skeleton";
 
 export default function App() {
   return (
@@ -18,9 +20,17 @@ export default function App() {
         />
       </div>
       <div className="flex flex-col h-[60vh] w-full md:w-3/6">
-        <PusherContainer>
-          <ChatCard className="h-full w-full" />
-        </PusherContainer>
+        <Suspense
+          fallback={
+            <Skeleton className="rounded-lg">
+              <div className="h-[60vh] rounded-lg bg-default-300">LOADING</div>
+            </Skeleton>
+          }
+        >
+          <PusherContainer>
+            <ChatCard className="h-full w-full" />
+          </PusherContainer>
+        </Suspense>
       </div>
     </main>
   );
