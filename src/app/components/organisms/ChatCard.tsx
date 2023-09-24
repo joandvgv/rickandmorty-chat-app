@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext } from "react";
 
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import { Divider } from "@nextui-org/divider";
@@ -11,6 +11,7 @@ import ChatBubble from "@/app/components/atoms/ChatBubble";
 import { MessageData } from "@/graphql/types/chat";
 import { getCharacterById } from "@/graphql/utils";
 import { useApolloClient } from "@apollo/client";
+import { ChatContext } from "./PusherContainer";
 
 type Props = {
   children?: React.ReactNode;
@@ -20,13 +21,7 @@ type Props = {
 
 export default function ChatCard(props: Props) {
   const client = useApolloClient();
-  // TODO: fix this hack!
-  const [currentCharacter, setCurrentCharacter] = useState("");
-  useEffect(() => {
-    setCurrentCharacter(localStorage.getItem("currentCharacter") ?? "");
-  }, []);
-
-  if (currentCharacter === "") return <></>;
+  const { currentCharacter } = useContext(ChatContext);
 
   return (
     <Card className={props.className}>
@@ -56,7 +51,7 @@ export default function ChatCard(props: Props) {
       </CardBody>
       <Divider />
       <CardFooter>
-        <ChatInputContainer character={currentCharacter}>
+        <ChatInputContainer character={currentCharacter!}>
           <ChatInput />
         </ChatInputContainer>
       </CardFooter>

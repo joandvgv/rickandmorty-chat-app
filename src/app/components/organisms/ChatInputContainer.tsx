@@ -2,7 +2,7 @@
 
 import { NEW_MESSAGE_FRAGMENT } from "@/graphql/characters-queries";
 import { PUT_MESSAGE_QUERY } from "@/graphql/chat-queries";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import {
   FieldValues,
   FormProvider,
