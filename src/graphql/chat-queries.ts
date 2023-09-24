@@ -11,7 +11,7 @@ export const GET_MESSAGES_QUERY = gql`
   }
 `;
 
-export const PUT_MESSAGE_QUERY = gql`
+export const PUT_MESSAGE_MUTATION = gql`
   mutation SendMessage(
     $threadId: String!
     $message: String!
@@ -23,6 +23,14 @@ export const PUT_MESSAGE_QUERY = gql`
       message
       time
       character
+    }
+  }
+`;
+
+export const DELETE_MESSAGES_MUTATION = gql`
+  mutation DeleteMessages($threadId: String!) {
+    deleteMessages(threadId: $threadId) {
+      ids
     }
   }
 `;

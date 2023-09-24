@@ -15,6 +15,8 @@ import { ChatContext } from "./PusherContainer";
 import { GET_CHARACTERS_QUERY } from "@/graphql/characters-queries";
 import { GET_MESSAGES_QUERY } from "@/graphql/chat-queries";
 import { Skeleton } from "@nextui-org/skeleton";
+import { Button } from "@nextui-org/react";
+import ClearMessagesButton from "../atoms/ClearMessagesButton";
 
 type Props = {
   children?: React.ReactNode;
@@ -43,18 +45,21 @@ export default function ChatCard(props: Props) {
 
   return (
     <Card className={props.className}>
-      <CardHeader className="flex gap-3">
+      <CardHeader className="grid grid-flow-col justify-between items-center gap-3">
         <div className="flex flex-col">
           <p className="text-small">Current Channel</p>
           <p className="text-small text-default-500">
             #travellers-from-other-universe
           </p>
         </div>
+        <div className="flex justify-end col-span-2">
+          {currentCharacter === "1" && <ClearMessagesButton />}
+        </div>
       </CardHeader>
       <Divider />
       <Skeleton isLoaded={!loading} className="h-full overflow-auto">
         <CardBody className="space-y-2">
-          {messages.map(({ message, id, character, time }: any) => {
+          {messages.map(({ message, id, character, time }: MessageData) => {
             const { image, name } = getCharacterById(client, character);
             return (
               <ChatBubble
@@ -71,7 +76,7 @@ export default function ChatCard(props: Props) {
       </Skeleton>
 
       <Divider />
-      <CardFooter>
+      <CardFooter className="py-5">
         <ChatInputContainer character={currentCharacter!}>
           <ChatInput />
         </ChatInputContainer>

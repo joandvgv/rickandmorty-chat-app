@@ -1,7 +1,7 @@
 "use client";
 
 import { NEW_MESSAGE_FRAGMENT } from "@/graphql/characters-queries";
-import { PUT_MESSAGE_QUERY } from "@/graphql/chat-queries";
+import { PUT_MESSAGE_MUTATION } from "@/graphql/chat-queries";
 import { useMutation } from "@apollo/client";
 import {
   FieldValues,
@@ -19,7 +19,7 @@ type Props = {
 
 export default function ChatInputContainer(props: Props) {
   const formMethods = useForm({ mode: "all" });
-  const [sendMessage] = useMutation(PUT_MESSAGE_QUERY, {
+  const [sendMessage] = useMutation(PUT_MESSAGE_MUTATION, {
     update(cache, { data }) {
       const dataToPut = {
         ...data.putMessage,
