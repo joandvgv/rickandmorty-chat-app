@@ -10,18 +10,36 @@ import ChatBubble from "@/app/components/atoms/ChatBubble";
 
 import { MessageData } from "@/graphql/types/chat";
 import { getCharacterById } from "@/graphql/utils";
-import { useApolloClient } from "@apollo/client";
+import { useApolloClient, useSuspenseQuery } from "@apollo/client";
 import { ChatContext } from "./PusherContainer";
+import { GET_CHARACTERS_QUERY } from "@/graphql/characters-queries";
+import { GET_MESSAGES_QUERY } from "@/graphql/chat-queries";
 
 type Props = {
   children?: React.ReactNode;
   className?: string;
-  messages: MessageData[];
 };
 
 export default function ChatCard(props: Props) {
   const client = useApolloClient();
   const { currentCharacter } = useContext(ChatContext);
+
+  const { data: messageData } = useSuspenseQuery<{
+    getMessages: MessageData[];
+  }>(GET_MESSAGES_QUERY, {
+    variables: { threadId: process.env.NEXT_PUBLIC_THREAD_ID },
+    returnPartialData: true,
+  });
+
+  const messages = messageData.getMessages ?? [];
+  const charactersInvolved = messages.map((message) => message?.character);
+
+  useSuspenseQuery(GET_CHARACTERS_QUERY, {
+    variables: { ids: charactersInvolved },
+    context: {
+      clientName: "rickMorty",
+    },
+  });
 
   return (
     <Card className={props.className}>
@@ -35,7 +53,7 @@ export default function ChatCard(props: Props) {
       </CardHeader>
       <Divider />
       <CardBody className="space-y-2">
-        {props.messages.map(({ message, id, character, time }: any) => {
+        {messages.map(({ message, id, character, time }: any) => {
           const { image, name } = getCharacterById(client, character);
           return (
             <ChatBubble

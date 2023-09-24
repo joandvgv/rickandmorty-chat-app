@@ -18,6 +18,8 @@ export const PUT_MESSAGE_QUERY = gql`
     $character: String!
   ) {
     putMessage(threadId: $threadId, message: $message, character: $character) {
+      id
+      __typename
       message
       time
       character

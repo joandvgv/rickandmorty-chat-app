@@ -19,11 +19,31 @@ type Props = {
 
 export default function ChatInputContainer(props: Props) {
   const formMethods = useForm({ mode: "all" });
-  const [sendMessage] = useMutation(PUT_MESSAGE_QUERY);
+  const [sendMessage] = useMutation(PUT_MESSAGE_QUERY, {
+    update(cache, { data }) {
+      const dataToPut = {
+        ...data.putMessage,
+        __typename: "Message",
+      };
+
+      cache.modify({
+        fields: {
+          getMessages(existingMessages = []) {
+            const newMessageRef = cache.writeFragment({
+              data: dataToPut,
+              fragment: NEW_MESSAGE_FRAGMENT,
+            });
+            return [...existingMessages, newMessageRef];
+          },
+        },
+      });
+    },
+  });
 
   const onSubmit: SubmitHandler<FieldValues> = async (fieldsData, event) => {
     formMethods.reset();
     const id = uuidv4();
+
     await sendMessage({
       variables: {
         message: fieldsData.message,
@@ -33,28 +53,11 @@ export default function ChatInputContainer(props: Props) {
       optimisticResponse: {
         putMessage: {
           __typename: "Message",
-          id, // explore using event ids directly.
+          id,
           character: props.character,
           message: fieldsData.message,
           time: Date.now().toString(),
         },
-      },
-      update(cache, { data }) {
-        cache.modify({
-          fields: {
-            getMessages(existingMessages = []) {
-              const newMessageRef = cache.writeFragment({
-                data: {
-                  id,
-                  __typename: "Message",
-                  ...data,
-                },
-                fragment: NEW_MESSAGE_FRAGMENT,
-              });
-              return [...existingMessages, newMessageRef];
-            },
-          },
-        });
       },
     });
   };

@@ -21,10 +21,9 @@ export const GET_CHARACTERS_COUNT_QUERY = gql`
 `;
 
 export const NEW_MESSAGE_FRAGMENT = gql`
-  fragment NewMessage on Messages {
+  fragment NewMessage on Message {
     id
     message
-    threadId
     time
     character
   }
