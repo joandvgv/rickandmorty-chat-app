@@ -56,7 +56,7 @@ export default function ChatInputContainer(props: Props) {
           id,
           character: props.character,
           message: fieldsData.message,
-          time: Date.now().toString(),
+          time: Math.floor(Date.now() / 1000).toString(),
         },
       },
     });
