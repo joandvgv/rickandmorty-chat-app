@@ -10,10 +10,11 @@ import ChatBubble from "@/app/components/atoms/ChatBubble";
 
 import { MessageData } from "@/graphql/types/chat";
 import { getCharacterById } from "@/graphql/utils";
-import { useApolloClient, useSuspenseQuery } from "@apollo/client";
+import { useApolloClient, useQuery } from "@apollo/client";
 import { ChatContext } from "./PusherContainer";
 import { GET_CHARACTERS_QUERY } from "@/graphql/characters-queries";
 import { GET_MESSAGES_QUERY } from "@/graphql/chat-queries";
+import { Skeleton } from "@nextui-org/skeleton";
 
 type Props = {
   children?: React.ReactNode;
@@ -24,17 +25,16 @@ export default function ChatCard(props: Props) {
   const client = useApolloClient();
   const { currentCharacter } = useContext(ChatContext);
 
-  const { data: messageData } = useSuspenseQuery<{
+  const { data: messageData, loading } = useQuery<{
     getMessages: MessageData[];
   }>(GET_MESSAGES_QUERY, {
     variables: { threadId: process.env.NEXT_PUBLIC_THREAD_ID },
-    returnPartialData: true,
   });
 
-  const messages = messageData.getMessages ?? [];
+  const messages = messageData?.getMessages ?? [];
   const charactersInvolved = messages.map((message) => message?.character);
 
-  useSuspenseQuery(GET_CHARACTERS_QUERY, {
+  useQuery(GET_CHARACTERS_QUERY, {
     variables: { ids: charactersInvolved },
     context: {
       clientName: "rickMorty",
@@ -52,21 +52,24 @@ export default function ChatCard(props: Props) {
         </div>
       </CardHeader>
       <Divider />
-      <CardBody className="space-y-2">
-        {messages.map(({ message, id, character, time }: any) => {
-          const { image, name } = getCharacterById(client, character);
-          return (
-            <ChatBubble
-              key={id}
-              message={message}
-              image={image}
-              time={time}
-              name={name}
-              type={character === currentCharacter ? "end" : "start"}
-            />
-          );
-        })}
-      </CardBody>
+      <Skeleton isLoaded={!loading} className="h-full overflow-auto">
+        <CardBody className="space-y-2">
+          {messages.map(({ message, id, character, time }: any) => {
+            const { image, name } = getCharacterById(client, character);
+            return (
+              <ChatBubble
+                key={id}
+                message={message}
+                image={image}
+                time={time}
+                name={name}
+                type={character === currentCharacter ? "end" : "start"}
+              />
+            );
+          })}
+        </CardBody>
+      </Skeleton>
+
       <Divider />
       <CardFooter>
         <ChatInputContainer character={currentCharacter!}>
