@@ -3,6 +3,7 @@
 import { NEW_MESSAGE_FRAGMENT } from "@/graphql/characters-queries";
 import { PUT_MESSAGE_QUERY } from "@/graphql/chat-queries";
 import { useMutation } from "@apollo/client";
+import { startTransition } from "react";
 import {
   FieldValues,
   FormProvider,
@@ -40,25 +41,27 @@ export default function ChatInputContainer(props: Props) {
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = async (fieldsData, event) => {
+  const onSubmit: SubmitHandler<FieldValues> = (fieldsData, event) => {
     formMethods.reset();
     const id = uuidv4();
 
-    await sendMessage({
-      variables: {
-        message: fieldsData.message,
-        character: props.character,
-        threadId: process.env.NEXT_PUBLIC_THREAD_ID,
-      },
-      optimisticResponse: {
-        putMessage: {
-          __typename: "Message",
-          id,
-          character: props.character,
+    startTransition(() => {
+      sendMessage({
+        variables: {
           message: fieldsData.message,
-          time: Date.now().toString(),
+          character: props.character,
+          threadId: process.env.NEXT_PUBLIC_THREAD_ID,
         },
-      },
+        optimisticResponse: {
+          putMessage: {
+            __typename: "Message",
+            id,
+            character: props.character,
+            message: fieldsData.message,
+            time: Date.now().toString(),
+          },
+        },
+      });
     });
   };
 
