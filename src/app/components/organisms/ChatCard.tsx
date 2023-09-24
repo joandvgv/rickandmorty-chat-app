@@ -8,13 +8,13 @@ import ChatBubble from "@/app/components/atoms/ChatBubble";
 
 import { MessageData } from "@/graphql/types/chat";
 import { getCharacterById } from "@/graphql/utils";
-import PusherContainer from "./PusherContainer";
 import { useApolloClient } from "@apollo/client";
 
 type Props = {
   children?: React.ReactNode;
   className?: string;
   messages: MessageData[];
+  character: string;
 };
 
 export default function ChatCard(props: Props) {
@@ -40,13 +40,14 @@ export default function ChatCard(props: Props) {
               image={image}
               time={time}
               name={name}
+              type={character === props.character ? "end" : "start"}
             />
           );
         })}
       </CardBody>
       <Divider />
       <CardFooter>
-        <ChatInputContainer>
+        <ChatInputContainer character={props.character}>
           <ChatInput />
         </ChatInputContainer>
       </CardFooter>

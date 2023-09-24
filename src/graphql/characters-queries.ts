@@ -10,6 +10,26 @@ export const GET_CHARACTERS_QUERY = gql`
   }
 `;
 
+export const GET_CHARACTERS_COUNT_QUERY = gql`
+  query GetCharacters {
+    characters {
+      info {
+        count
+      }
+    }
+  }
+`;
+
+export const NEW_MESSAGE_FRAGMENT = gql`
+  fragment NewMessage on Messages {
+    id
+    message
+    threadId
+    time
+    character
+  }
+`;
+
 export const GET_CHARACTER_BY_ID_FRAGMENT = gql`
   fragment MyCharacter on Character {
     id

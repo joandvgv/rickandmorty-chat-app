@@ -18,3 +18,10 @@ type Character = {
   url: string; // URL
   created: string; // Time
 };
+
+type Pagination = {
+  count: number;
+  pages: number;
+  next: number;
+  prev: number;
+};

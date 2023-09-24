@@ -1,8 +1,7 @@
 "use client";
-import { ApolloLink, HttpLink } from "@apollo/client";
+import { ApolloLink, HttpLink, InMemoryCache } from "@apollo/client";
 import {
   NextSSRApolloClient,
-  NextSSRInMemoryCache,
   SSRMultipartLink,
 } from "@apollo/experimental-nextjs-app-support/ssr";
 
@@ -31,7 +30,8 @@ export function makeClient() {
   const isServer = typeof window === "undefined";
 
   return new NextSSRApolloClient({
-    cache: new NextSSRInMemoryCache(),
+    cache: new InMemoryCache(),
+    connectToDevTools: process.env.NODE_ENV !== "production",
     link: isServer ? ssrLink : link,
   });
 }
