@@ -15,6 +15,8 @@ export function makeClient() {
     uri: process.env.NEXT_PUBLIC_RICK_MORTY_CLIENT_URI,
   });
 
+  // using link split to avoid having multiple clients
+  // we could alternatively use the same client and call this api from the server instead
   const link = ApolloLink.split(
     (operation) => operation.getContext().clientName === "rickMorty",
     rickMortyLink,

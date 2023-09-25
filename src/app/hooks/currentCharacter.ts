@@ -2,6 +2,10 @@ import { GET_CHARACTERS_COUNT_QUERY } from "@/graphql/characters-queries";
 import { useSuspenseQuery } from "@apollo/client";
 import { useEffect, useMemo, useState } from "react";
 
+/**
+ * Get a random character id from Rick&Morty API
+ * and store it in local storage if it's not stored already
+ */
 export default function useCurrentCharacter() {
   const { data: countData } = useSuspenseQuery<{
     characters: { info: Pagination };

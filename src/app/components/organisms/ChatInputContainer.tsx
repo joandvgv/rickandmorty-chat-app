@@ -40,7 +40,7 @@ export default function ChatInputContainer(props: Props) {
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = async (fieldsData, event) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (fieldsData) => {
     formMethods.reset();
     const id = uuidv4();
 

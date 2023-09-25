@@ -1,5 +1,8 @@
 import { useEffect, useRef } from "react";
 
+/**
+ * Scroll to the bottom of the given container ref when the specified dependency changes
+ */
 export default function useScrollBottom<
   T extends Array<any>,
   K extends HTMLElement
