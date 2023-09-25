@@ -1,5 +1,3 @@
-// import { RickMortyClient } from "@/graphql/client";
-
 import { ApolloClient } from "@apollo/client";
 import { GET_CHARACTER_BY_ID_FRAGMENT } from "./characters-queries";
 
