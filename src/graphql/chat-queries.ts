@@ -30,7 +30,7 @@ export const PUT_MESSAGE_MUTATION = gql`
 export const DELETE_MESSAGES_MUTATION = gql`
   mutation DeleteMessages($threadId: String!) {
     deleteMessages(threadId: $threadId) {
-      ids
+      success
     }
   }
 `;
